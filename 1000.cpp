@@ -4,44 +4,23 @@
 #define MOD	1000000007
 using namespace std;
 typedef long long int ll;
-typedef pair<int,int> p;
+typedef pair<int,int> pp;
 
+ll d, p;
+ll ans = -1;
 
-int n;
-vector<p> j;
-int l, pp;
-priority_queue<int> pq;
+void solv(ll now, ll rest, ll lst) {
+	if (now >= pow(10, d)) return;
+	if (rest == 0) ans = max(ans, now);
+	for (ll i = 2; i <= lst; i++) {
+		solv(now * i, rest - 1, i);
+	}
+	return;
+}
 
 int main() {
 	inp;
-	cin >> n;
-	for (int i = 1; i <= n; i++) {
-		int a, b;
-		cin >> a >> b;
-		j.push_back({ a,b });
-	}
-
-	cin >> l >> pp;
-	j.push_back({ l,0 });
-	sort(j.begin(), j.end(), [](const p& a, const p& b) {
-		return a.first < b.first;
-		});
-	
-	int ans = 0;
-	int lst = -1;
-	while (pp < l) {
-		ans++;
-		for (int i = lst+1; j[i].first <= pp; i++) {
-			pq.push({ j[i].second });
-			lst = i;
-		}
-		if (pq.empty()) {
-			cout << "-1";
-			return 0;
-		}
-		pp += pq.top();
-		pq.pop();
-	}
+	cin >> d >> p;
+	solv(1, p, 9);
 	cout << ans;
-
 }
